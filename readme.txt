@@ -1,4 +1,4 @@
-PKLite SQL Version 2 Beta 3
+pikle Version 2 Beta 4
 
 Install instructions: 
 1) unzip zip file into the folder you want to have pklite installed. 

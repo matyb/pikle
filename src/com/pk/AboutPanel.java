@@ -57,7 +57,7 @@ public class AboutPanel extends JPanel implements ActionListener
 		JPanel bottumPanel = new JPanel();
 		JLabel spaceLable = new JLabel("       ");
 		spaceLable.setMaximumSize(new Dimension(10,10));
-		JLabel tmpJLabel = new JLabel("<html> V2.0 Beta 3 <P>Pklite SQL Client is a modified version of a program<P>called Pretty Kid For more information about Pretty Kid<P>click on the about pretty kid button<p><A href=\"http://pklite.sourceforge.net/\">pklite.sourceforge.net</A>");
+		JLabel tmpJLabel = new JLabel("<html> V2.0 Beta 4 <P>Pikle SQL Client is a modified version of a program<P>called pklite For more information about Pretty Kid<P>which pklite is based, click on the about pretty kid button<p><A href=\"http://pklite.sourceforge.net/\">pklite.sourceforge.net</A>");
 		JLabel imgLabel = new JLabel(tmpImageIcon); 
 		okJButton = new JButton("Ok");
 		aboutPKJButton = new JButton("About Pretty Kid");
