@@ -40,11 +40,12 @@ jdbc:microsoft:sqlserver://server1:1433;SelectMethod=Cursor
 2)If you find any other issues please notify me using the contact info listed below. 
 
 Credits:
-This program is a modification of a program call Pretty Kid (www.prettykid.com)
+This program is a modification of a program called pklite, which in turn is a modification of a program called Pretty Kid (www.prettykid.com)
+pklite was originally developed by sfn.chris@sympatico.ca
 The look and feel was found at http://www.incors.org/
 
 Contact Information:
 for more info about this program visit http://pklite.sourceforge.net 
-or email me @ sfn.chris@sympatico.ca
+or email me @ mathewkbentley@gmail.com
 
 
