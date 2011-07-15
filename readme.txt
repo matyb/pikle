@@ -25,11 +25,10 @@ What's New
 This is mostly a code refactoring and stabilizing build.  Limited support for Microsoft SQL Server was added.
 
 Fixed issues:
-1. When a SQL file is load the carriage return was removed.
-2. Data is not lost when the window is maximized.
-3. Only unique SQL statements will be placed in the history.
-	This is configurable through the preferences under general
-
+1. apache commons dependancy is no more
+2. defaults to oracle supported look and feel but kunstoff is still available in distribution
+3. eliminated compiler warnings, swapped concrete collection references w/ interfaces and parameterized generic classes
+4. code formatting and redundancy corrections
 
 
 
