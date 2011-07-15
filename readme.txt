@@ -3,7 +3,7 @@ PKLite SQL Version 2 Beta 3
 Install instructions: 
 1) unzip zip file into the folder you want to have pklite installed. 
 2) Copy any .jar or .zip files that contain any JDBC drivers into the lib directory. 
-3) Call java -jar startup.jar that’s it have fun hope you like the program and if you have any questions just email me. (sfn.chris@sympatico.ca)
+3) Call java -jar startup.jar that's it have fun hope you like the program and if you have any questions just email me. (mathewkbentley@gmail.com)
 4) Enter any database information in the datasource section of the preferences windows. 
 
 For this release there are only three database dialects available others will be added
