@@ -110,7 +110,7 @@ public class PrettyKid extends JFrame implements ActionListener, Constants {
 
 	public PrettyKid() {
 
-		super("PKLite SQL Client"); // Call base constructor
+		super("pikle SQL Client"); // Call base constructor
 
 		Set<AWTKeyStroke> tmpHashSet = new HashSet<AWTKeyStroke>();
 		tmpHashSet.add(AWTKeyStroke.getAWTKeyStroke("TAB"));
@@ -182,7 +182,7 @@ public class PrettyKid extends JFrame implements ActionListener, Constants {
 		redoItem = new JMenuItem("Redo");
 
 		planItem = new JMenuItem("Explain plan");
-		aboutpklItem = new JMenuItem("About PKLite"); // About item
+		aboutpklItem = new JMenuItem("About pikle"); // About item
 
 		planItem = new JMenuItem("Explain plan");
 		nextWindowItem = new JMenuItem("Next Window");
@@ -998,10 +998,6 @@ public class PrettyKid extends JFrame implements ActionListener, Constants {
 	}
 
 	public void aboutPkl() {
-		// JOptionPane.showMessageDialog(this,
-		// "Pklite is a modified version of a program called Pretty Kid\nFor more information about Pretty Kid click on the \nabout pretty kid menu item in the help menu\nhttp://pklite.sourceforge.net/",
-		// "About PKLite", JOptionPane.INFORMATION_MESSAGE, new
-		// ImageIcon("images/yoda.gif"));
 		int yPos = 0;
 		int xPos = 0;
 		JDialog tmpJDialog = new JDialog(this, true);
