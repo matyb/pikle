@@ -1,15 +1,14 @@
 pikle Version 2 Beta 4
 
 Install instructions: 
-1) unzip zip file into the folder you want to have pklite installed. 
+1) Unzip zip file into the folder you want to have pikle installed. 
 2) Copy any .jar or .zip files that contain any JDBC drivers into the lib directory. 
 3) Call java -jar startup.jar that's it have fun hope you like the program and if you have any questions just email me. (mathewkbentley@gmail.com)
 4) Enter any database information in the datasource section of the preferences windows. 
 
 For this release there are only three database dialects available others will be added
 as they are created.  You can create your own by implementing the com.pk.DatabaseDialect interface.
-Once you class is created package it in a jar or zip and place it in the lib directory of you pklite
-SQL client installation.
+Once you class is created package it in a jar or zip and place it in the lib directory of your pikle SQL client installation.
 If you do create more I would ask that you send them to me so I can add them to the next release.
 
 
@@ -44,7 +43,7 @@ pklite was originally developed by sfn.chris@sympatico.ca
 The look and feel was found at http://www.incors.org/
 
 Contact Information:
-for more info about this program visit http://pklite.sourceforge.net 
+for more info about this program visit http://github.com/matyb/pikle 
 or email me @ mathewkbentley@gmail.com
 
 
