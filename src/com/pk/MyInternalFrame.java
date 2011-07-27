@@ -18,8 +18,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -64,7 +62,7 @@ public class MyInternalFrame extends JInternalFrame implements
 
 	private static final long serialVersionUID = 9103843865329019956L;
 
-	class ConnectionDialog extends JInternalFrame implements FocusListener {
+	class ConnectionDialog extends JInternalFrame {
 		private static final long serialVersionUID = -5200934680040088833L;
 		protected boolean canceled;
 		public MyInternalFrame jif;
@@ -168,12 +166,6 @@ public class MyInternalFrame extends JInternalFrame implements
 			gbc.gridwidth = GridBagConstraints.REMAINDER;
 			gbc.anchor = GridBagConstraints.CENTER;
 			pane.add(getButtonPanel(), gbc);
-		}
-
-		public void focusGained(FocusEvent e) {
-		}
-
-		public void focusLost(FocusEvent e) {
 		}
 
 		protected JPanel getButtonPanel() {
@@ -525,7 +517,7 @@ public class MyInternalFrame extends JInternalFrame implements
 	public void executeDescSQL(String argQuery) {
 
 		ConnectionInformation tmpConnectionInformation = getConnectionInformation();
-		String queryDesc = tmpConnectionInformation.getDatabaseDialect()
+		final String queryDesc = tmpConnectionInformation.getDatabaseDialect()
 				.getDescribeSQLString(argQuery, tmpConnectionInformation);
 		if (queryDesc == null || queryDesc.equals("")) {
 			// if this dialect does not support this feature must report to user
@@ -535,44 +527,48 @@ public class MyInternalFrame extends JInternalFrame implements
 			return;
 		}
 		doHistory(argQuery);
-		int color = 0;
-		try {
-			if (table.getBackground() == Color.black)
-				color = 1;
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Use scrollbars
-			table.setForeground(Color.black);
-			table.setBackground(Color.white);
-			table.setFont(new Font("Default", Font.BOLD, 12));
-			table.setShowGrid(true);
-			long startTime = System.currentTimeMillis();
-			model.setResultSet(statement.executeQuery(queryDesc));
-			float qTime = System.currentTimeMillis() - startTime;
-			qTime = qTime / 1000;
+		new Thread(){
+			public void run(){
+				int color = 0;
+				try {
+					if (table.getBackground() == Color.black)
+						color = 1;
+					table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Use scrollbars
+					table.setForeground(Color.black);
+					table.setBackground(Color.white);
+					table.setFont(new Font("Default", Font.BOLD, 12));
+					table.setShowGrid(true);
+					long startTime = System.currentTimeMillis();
+					model.setResultSet(statement.executeQuery(queryDesc));
+					float qTime = System.currentTimeMillis() - startTime;
+					qTime = qTime / 1000;
 
-			setMyTableWidth();
+					setMyTableWidth();
 
-			statusBar.elapsedTimePane.setVisible(true);
-			statusBar.messagePane.setVisible(true);
-			statusBar.setElapsedTimePane(qTime + " Sec.");
-			statusBar.setMessagePane(model.getRowCount() + " row(s) selected.");
-		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(this, sqle.getMessage());
-			statusBar.messagePane.setVisible(true);
-			statusBar.setMessagePane(sqle.getMessage()); // Display error
-															// message
-			if (color == 1) {
-				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-				DefaultTableColumnModel tcm = (DefaultTableColumnModel) table
-						.getColumnModel();
-				TableColumn tc = tcm.getColumn(0);
-				table.setShowGrid(false);
-				tc.setWidth(600);
-				table.setForeground(Color.white);
-				table.setBackground(Color.black);
-				table.setFont(new Font("Default", Font.BOLD, 12));
-				tc.setResizable(true);
+					statusBar.elapsedTimePane.setVisible(true);
+					statusBar.messagePane.setVisible(true);
+					statusBar.setElapsedTimePane(qTime + " Sec.");
+					statusBar.setMessagePane(model.getRowCount() + " row(s) selected.");
+				} catch (SQLException sqle) {
+					JOptionPane.showMessageDialog(MyInternalFrame.this, sqle.getMessage());
+					statusBar.messagePane.setVisible(true);
+					statusBar.setMessagePane(sqle.getMessage()); // Display error
+																	// message
+					if (color == 1) {
+						table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+						DefaultTableColumnModel tcm = (DefaultTableColumnModel) table
+								.getColumnModel();
+						TableColumn tc = tcm.getColumn(0);
+						table.setShowGrid(false);
+						tc.setWidth(600);
+						table.setForeground(Color.white);
+						table.setBackground(Color.black);
+						table.setFont(new Font("Default", Font.BOLD, 12));
+						tc.setResizable(true);
+					}
+				}
 			}
-		}
+		}.start();
 	}
 
 	public void executePlanSQL() {
@@ -604,74 +600,73 @@ public class MyInternalFrame extends JInternalFrame implements
 		}
 	}
 
-	/**
-	 * 
-	 */
-
-	public void executeSQL(String query) {
+	public void executeSQL(String tmpQuery) {
 
 		resultTabbedPane.setSelectedIndex(0);
 
-		doHistory(query);
-		query = commentHandling(query);
+		doHistory(tmpQuery);
+		final String query = commentHandling(tmpQuery);
 
 		if (query == null) // If there's nothing we are done
 			return;
-		int color = 0;
-		try {
-			if (table.getBackground() == Color.black)
-				color = 1;
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Use scrollbars
-			table.setForeground(Color.black);
-			table.setBackground(Color.white);
-			table.setFont(new Font("Default", Font.BOLD, 12));
-			table.setShowGrid(true);
-			// table.set
-
-			sqlTextArea.setCursor(Cursor
-					.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			long startTime = System.currentTimeMillis();
-			model.setResultSet(statement.executeQuery(query));
-			float qTime = System.currentTimeMillis() - startTime;
-			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			sqlTextArea.setCursor(Cursor
-					.getPredefinedCursor(Cursor.TEXT_CURSOR));
-
-			setMyTableWidth();
-
-			qTime = qTime / 1000;
-			statusBar.elapsedTimePane.setVisible(true);
-			statusBar.setElapsedTimePane(qTime + " Sec.");
-			if (model.totalRowCount < 100) {
-				statusBar.messagePane.setVisible(true);
-				statusBar.setMessagePane(model.getRowCount()
-						+ " row(s) selected.");
-			} else {
-				statusBar.messagePane.setVisible(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Use scrollbars
+		table.setForeground(Color.black);
+		table.setBackground(Color.white);
+		table.setFont(new Font("Default", Font.BOLD, 12));
+		table.setShowGrid(true);
+		new Thread(){
+			public void run(){
+				int color = 0;
+				try{
+					if (table.getBackground() == Color.black){
+						color = 1;
+					}
+					sqlTextArea.setCursor(Cursor
+							.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					MyInternalFrame.this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					long startTime = System.currentTimeMillis();
+					model.setResultSet(statement.executeQuery(query));
+					float qTime = System.currentTimeMillis() - startTime;
+					MyInternalFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					sqlTextArea.setCursor(Cursor
+							.getPredefinedCursor(Cursor.TEXT_CURSOR));
+		
+					setMyTableWidth();
+		
+					qTime = qTime / 1000;
+					statusBar.elapsedTimePane.setVisible(true);
+					statusBar.setElapsedTimePane(qTime + " Sec.");
+					if (model.totalRowCount < 100) {
+						statusBar.messagePane.setVisible(true);
+						statusBar.setMessagePane(model.getRowCount()
+								+ " row(s) selected.");
+					} else {
+						statusBar.messagePane.setVisible(false);
+					}
+				} catch (Exception sqle) {
+					JOptionPane.showMessageDialog(MyInternalFrame.this, sqle.getMessage());
+					statusBar.messagePane.setVisible(true);
+					statusBar.setMessagePane(sqle.getMessage()); // Display error
+																	// message
+					MyInternalFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					sqlTextArea.setCursor(Cursor
+							.getPredefinedCursor(Cursor.TEXT_CURSOR));
+					if (color == 1) {
+						table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+						DefaultTableColumnModel tcm = (DefaultTableColumnModel) table
+								.getColumnModel();
+						TableColumn tc = tcm.getColumn(0);
+						table.setShowGrid(false);
+						table.setCellSelectionEnabled(true);
+						tc.setWidth(600);
+						table.setForeground(Color.white);
+						table.setBackground(Color.black);
+						table.setFont(new Font("Default", Font.BOLD, 12));
+						tc.setResizable(true);
+					}
+				}
 			}
-		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(this, sqle.getMessage());
-			statusBar.messagePane.setVisible(true);
-			statusBar.setMessagePane(sqle.getMessage()); // Display error
-															// message
-			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			sqlTextArea.setCursor(Cursor
-					.getPredefinedCursor(Cursor.TEXT_CURSOR));
-			if (color == 1) {
-				table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-				DefaultTableColumnModel tcm = (DefaultTableColumnModel) table
-						.getColumnModel();
-				TableColumn tc = tcm.getColumn(0);
-				table.setShowGrid(false);
-				table.setCellSelectionEnabled(true);
-				tc.setWidth(600);
-				table.setForeground(Color.white);
-				table.setBackground(Color.black);
-				table.setFont(new Font("Default", Font.BOLD, 12));
-				tc.setResizable(true);
-			}
-		}
+		}.start();
 	}
 
 	/**
@@ -853,45 +848,47 @@ public class MyInternalFrame extends JInternalFrame implements
 		sqlTextArea.setText(s);
 	}
 
-	public void updateSQL(String query) {
+	public void updateSQL(final String query) {
 
-		int rowsHandled;
+		final int[] rowsHandled = new int[0];
 
 		doHistory(query);
 
 		if (query == null) // If there's nothing we are done
 			return;
-		try {
-
-			long startTime = System.currentTimeMillis();
-			rowsHandled = statement.executeUpdate(query);
-			model.setResultSet(null);
-			float qTime = System.currentTimeMillis() - startTime;
-			qTime = qTime / 1000;
-			query = query.trim();
-
-			statusBar.elapsedTimePane.setVisible(true);
-			statusBar.messagePane.setVisible(true);
-
-			if (query.toUpperCase().startsWith("INSERT")) {
-				statusBar.setElapsedTimePane(qTime + " Sec.");
-				statusBar.setMessagePane(rowsHandled + " row(s) inserted.");
-			} else if (query.toUpperCase().startsWith("UPDATE")) {
-				statusBar.setElapsedTimePane(qTime + " Sec.");
-				statusBar.setMessagePane(rowsHandled + " row(s) updated.");
-			} else if (query.toUpperCase().startsWith("DELETE")) {
-				statusBar.setElapsedTimePane(qTime + " Sec.");
-				statusBar.setMessagePane(rowsHandled + " row(s) deleted.");
-			} else {
-				statusBar.setElapsedTimePane(qTime + " Sec.");
-				statusBar.setMessagePane("Executed successfully ");
+		new Thread(){
+			public void run(){
+				try{
+					long startTime = System.currentTimeMillis();
+					rowsHandled[0] = statement.executeUpdate(query);
+					model.setResultSet(null);
+					float qTime = System.currentTimeMillis() - startTime;
+					qTime = qTime / 1000;
+					String tmpQuery = query.trim();
+	
+					statusBar.elapsedTimePane.setVisible(true);
+					statusBar.messagePane.setVisible(true);
+	
+					if (tmpQuery.toUpperCase().startsWith("INSERT")) {
+						statusBar.setElapsedTimePane(qTime + " Sec.");
+						statusBar.setMessagePane(rowsHandled + " row(s) inserted.");
+					} else if (tmpQuery.toUpperCase().startsWith("UPDATE")) {
+						statusBar.setElapsedTimePane(qTime + " Sec.");
+						statusBar.setMessagePane(rowsHandled + " row(s) updated.");
+					} else if (tmpQuery.toUpperCase().startsWith("DELETE")) {
+						statusBar.setElapsedTimePane(qTime + " Sec.");
+						statusBar.setMessagePane(rowsHandled + " row(s) deleted.");
+					} else {
+						statusBar.setElapsedTimePane(qTime + " Sec.");
+						statusBar.setMessagePane("Executed successfully ");
+					}
+				}catch (SQLException sqle) {
+					JOptionPane.showMessageDialog(MyInternalFrame.this, sqle.getMessage());
+					statusBar.messagePane.setVisible(true);
+					statusBar.setMessagePane(sqle.getMessage()); // Display error message
+				}
 			}
-		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(this, sqle.getMessage());
-			statusBar.messagePane.setVisible(true);
-			statusBar.setMessagePane(sqle.getMessage()); // Display error
-															// message
-		}
+		}.start();
 	}
 
 	public ConnectionInformation getConnectionInformation() {
