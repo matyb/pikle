@@ -40,9 +40,6 @@ public class Config {
 
 	private int historyMode = Config.HISTORY_MODE_ALL;
 
-	/**
-     * 
-     */
 	public Config() {
 		super();
 		connectionConfigs = new ArrayList<ConnectionConfig>();

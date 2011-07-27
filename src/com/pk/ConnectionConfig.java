@@ -37,9 +37,10 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
      * @param databaseDilectName
      *            The databaseDilectName to set.
      */
-    public void setDatabaseDialectName(String databaseDilectName)
+    public ConnectionConfig setDatabaseDialectName(String databaseDilectName)
     {
         this.databaseDialectName = databaseDilectName;
+        return this;
     }
 
     /**
@@ -54,9 +55,10 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
      * @param driver
      *            The driver to set.
      */
-    public void setDriver(String driver)
+    public ConnectionConfig setDriver(String driver)
     {
         this.driver = driver;
+        return this;
     }
 
     /**
@@ -71,9 +73,10 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
      * @param name
      *            The name to set.
      */
-    public void setName(String name)
+    public ConnectionConfig setName(String name)
     {
         this.name = name;
+        return this;
     }
 
     /**
@@ -88,9 +91,10 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
      * @param url
      *            The url to set.
      */
-    public void setUrl(String url)
+    public ConnectionConfig setUrl(String url)
     {
         this.url = url;
+        return this;
     }
 
     /*
@@ -102,6 +106,7 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
     {
         return getName();
     }
+    
     /**
      * @return Returns the databaseDialect.
      */
@@ -114,8 +119,7 @@ public class ConnectionConfig implements Comparable<ConnectionConfig>
 	            databaseDialect = (DatabaseDialect)this.getClass().getClassLoader().loadClass(databaseDialectName).newInstance();
 	        }
 	        catch (Exception e) 
-	        {
-	            //TODO display error when class not found. 
+	        { 
 	            e.printStackTrace();
 	        }
         }

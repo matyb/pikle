@@ -8,8 +8,6 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
@@ -23,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class ConnectionDialog extends JDialog implements FocusListener
+public class ConnectionDialog extends JDialog 
 {
 	
     private static final long serialVersionUID = 3075853931225627975L;
@@ -127,14 +125,6 @@ public class ConnectionDialog extends JDialog implements FocusListener
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
         pane.add(getButtonPanel(), gbc);
-    }
-
-    public void focusGained(FocusEvent e)
-    {
-    }
-
-    public void focusLost(FocusEvent e)
-    {
     }
 
     protected JPanel getButtonPanel()

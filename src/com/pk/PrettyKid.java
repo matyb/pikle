@@ -47,8 +47,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 
 import com.pk.script.ui.ScriptPanel;
@@ -124,8 +126,17 @@ public class PrettyKid extends JFrame implements ActionListener, Constants {
 			// This code will load and create the new config object from a xml file
 			ConfigDigester tmpConfigDigester = new ConfigDigester();
 			tmpConfigDigester.setFileName("config.xml");
-			config = tmpConfigDigester.createConfig();
-			UIManager.setLookAndFeel(config.getSelectedLookAndFeel());
+			config = tmpConfigDigester.createConfig(this);
+			LookAndFeel selectedLookAndFeel = config.getSelectedLookAndFeel();
+			if(selectedLookAndFeel == null){
+				System.out.println("No selected Look and Feel - using metal as default.");
+				UIManager.setLookAndFeel(new MetalLookAndFeel());
+			}else{
+				UIManager.setLookAndFeel(selectedLookAndFeel);
+			}
+			for(String errorMsg : tmpConfigDigester.getErrorMessages()){
+				JOptionPane.showMessageDialog(this, errorMsg);
+			}
 			SwingUtilities.updateComponentTreeUI(this);
 			getpropertiyFrame().setConfig(config);
 			getpropertiyFrame().initialize();
@@ -138,18 +149,15 @@ public class PrettyKid extends JFrame implements ActionListener, Constants {
 				try {
 					Class.forName(driveName);
 				} catch (ClassNotFoundException e) {
-					JOptionPane.showMessageDialog(this,
-							"Could not find class for driver: " + driveName);
+					JOptionPane.showMessageDialog(this, "Could not find class for driver: " + driveName);
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				UIManager.setLookAndFeel(UIManager
-						.getSystemLookAndFeelClassName());
-			} catch (Exception e1) {
-			}
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e1) {}
 		}
 		setBounds(50, 0, 100, 100); // Set window bounds
 		menuBar = new JMenuBar(); // The menu bar

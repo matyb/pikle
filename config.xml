@@ -16,12 +16,8 @@
 		<borderColor>green</borderColor>
 		<altRowColor>#b9ffb9</altRowColor>
 	</export>
-	<general>	
+	<general>
 		<lafs>
-			<laf>
-				<class>com.incors.plaf.kunststoff.KunststoffLookAndFeel</class>
-				<selected>false</selected>
-			</laf>
 			<laf>
 				<class>javax.swing.plaf.metal.MetalLookAndFeel</class>
 				<selected>true</selected>
@@ -35,8 +31,8 @@
 				<selected>false</selected>
 			</laf>
 		</lafs>
-		<history>
-			<mode>2</mode>
-		</history>
-	</general>
+			<history>
+				<mode>2</mode>
+			</history>
+</general>
 </config>
