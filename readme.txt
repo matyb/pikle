@@ -1,10 +1,7 @@
-pikle Version 2 Beta 4
-
 Install instructions: 
 1) Unzip zip file into the folder you want to have pikle installed. 
 2) Copy any .jar or .zip files that contain any JDBC drivers into the lib directory. 
-3) Call run.sh that's it have fun hope you like the program and if you have any questions just email me. (mathewkbentley@gmail.com)
-4) Enter any database information in the datasource section of the preferences windows. 
+3) Run run.sh or run.bat depending on which OS you're using.
 
 For this release there are only three database dialects available others will be added
 as they are created.  You can create your own by implementing the com.pk.DatabaseDialect interface.
@@ -41,9 +38,4 @@ Credits:
 This program is a modification of a program called pklite, which in turn is a modification of a program called Pretty Kid (www.prettykid.com)
 pklite was originally developed by sfn.chris@sympatico.ca
 The look and feel was found at http://www.incors.org/
-
-Contact Information:
-for more info about this program visit http://github.com/matyb/pikle 
-or email me @ mathewkbentley@gmail.com
-
 
